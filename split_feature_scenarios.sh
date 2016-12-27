@@ -1,12 +1,26 @@
 function split_feature_scenarios() {
-  local split_feature_scenarios_LINES
   local split_feature_scenarios_FEATURE
+  local split_feature_scenarios_FEATURE_FILES=()
+  local split_feature_scenarios_FEATURE_FILE
+  local split_feature_scenarios_SPLITTED_FILE
+  local split_feature_scenarios_SPLITTED_DIR
+
+  for split_feature_scenarios_FEATURE in $@
+  do
+    if [ -d $split_feature_scenarios_FEATURE ]; then
+      for split_feature_scenarios_FEATURE_FILE in `find $split_feature_scenarios_FEATURE -type f -name "*.feature"`
+      do
+        split_feature_scenarios $split_feature_scenarios_FEATURE_FILE || return $?
+      done
+    fi
+  done
+
+  local split_feature_scenarios_LINES
   local split_feature_scenarios_FIRST_SCENARIO_LINE
   local split_feature_scenarios_CONTENT_BEFORE_FIRST_SCENARIO
   local split_feature_scenarios_LINE
   local split_feature_scenarios_ENDING_LINE
   local split_feature_scenarios_DIRECTORY
-  local split_feature_scenarios_SPLITTED_FILE
   local split_feature_scenarios_SPLITTED_FILE_LINES
   local split_feature_scenarios_EXAMPLES_LINE
   local split_feature_scenarios_SPLITTED_EXAMPLES_DIRECTORY
