@@ -6,7 +6,7 @@ function es_indices_adjust_concurrency() {
       local es_indices_adjust_concurrency_THREADS="$1"
       ;;
     *)
-      local es_indices_adjust_concurrency_THREADS=`cpu_num`
+      local es_indices_adjust_concurrency_THREADS=`nproc`
       ;;
   esac
 

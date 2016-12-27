@@ -12,7 +12,7 @@ function bepc_failures() {
     return 0
   elif [ $bepc_failures_NUM -eq 1 ]; then
     echorun bec_failures || return $?
-  elif [ $bepc_failures_NUM -le `cpu_num` ]; then
+  elif [ $bepc_failures_NUM -le `nproc` ]; then
     echorun bec_parallelized $bepc_failures_FILES || return $?
   else
     echorun bepc $bepc_failures_FILES || return $?

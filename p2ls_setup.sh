@@ -4,7 +4,7 @@ function p2ls_setup() {
   local p2ls_setup_THREAD=1
   local p2ls_setup_PROJECT_ROOT=`pwd -P`
   local p2ls_setup_ROOT="$p2ls_setup_PROJECT_ROOT/tmp/p2ls"
-  while [ $p2ls_setup_THREAD -le `cpu_num` ]
+  while [ $p2ls_setup_THREAD -le `nproc` ]
   do
     echo
     echo "Setup thread #${p2ls_setup_THREAD}"

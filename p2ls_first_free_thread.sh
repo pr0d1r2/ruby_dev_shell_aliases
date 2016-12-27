@@ -6,7 +6,7 @@ function p2ls_first_free_thread() {
   while [ $p2ls_first_free_thread_THREAD_FREE -eq 0 ]
   do
     local p2ls_first_free_thread_THREAD=1
-    while [ $p2ls_first_free_thread_THREAD -le `cpu_num` ]
+    while [ $p2ls_first_free_thread_THREAD -le `nproc` ]
     do
       if [ ! -e $p2ls_first_free_thread_ROOT/$p2ls_first_free_thread_THREAD/THREAD_BUSY ]; then
         echo $p2ls_first_free_thread_THREAD

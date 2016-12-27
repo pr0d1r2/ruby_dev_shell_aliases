@@ -1,3 +1,3 @@
 function bundler_threads() {
-  expr `cpu_num` \* 4
+  expr `nproc` \* 4
 }

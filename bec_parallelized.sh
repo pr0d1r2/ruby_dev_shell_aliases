@@ -5,7 +5,7 @@ function bec_parallelized() {
   do
     bec_parallelized_TEST_ENV_NUMBER+=1
   done
-  if [ $bec_parallelized_TEST_ENV_NUMBER -gt `cpu_num` ]; then
+  if [ $bec_parallelized_TEST_ENV_NUMBER -gt `nproc` ]; then
     echo "Number of specs greater than CPUs. Exiting ..."
     return 8472
   fi
