@@ -1,4 +1,5 @@
 function spec_for() {
+  local spec_for_FILE
   local spec_for_SPEC_FILE
   for spec_for_FILE in $@
   do
