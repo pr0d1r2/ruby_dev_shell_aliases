@@ -1,3 +1,9 @@
+# Run spec for given file/line
+#
+# Example usage:
+#
+# run_spec_for app/model/user.rb # will run `rspec spec/model/user_spec.rb`
+# run_spec_for spec/model/user_spec.rb:8472 # will run `rspec spec/model/user_spec.rb:8472`
 function run_spec_for() {
   local run_spec_for_COUNT=0
   local run_spec_for_FILE
