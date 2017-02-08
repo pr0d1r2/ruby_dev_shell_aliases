@@ -5,7 +5,7 @@ function bi() {
     if [ $? -eq 0 ]; then
       local bi_BUNDLED_WITH_VERSION=`echo $(tail -n1 Gemfile.lock)`
       local bi_BUNDLER_VERSION_PARAM="_${bi_BUNDLED_WITH_VERSION}_"
-      case `bundler --version | cut -f 3 -d ' '` in
+      case `bundle $bi_BUNDLER_VERSION_PARAM version | cut -f 3 -d ' '` in
         $bi_BUNDLED_WITH_VERSION)
           ;;
         *)
