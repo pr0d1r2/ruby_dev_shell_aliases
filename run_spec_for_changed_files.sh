@@ -8,9 +8,9 @@ function run_spec_for_changed_files() {
     run_spec_for_changed_files_COUNT+=1
   done
   if [ $run_spec_for_changed_files_COUNT -eq 1 ]; then
-    echorun bers $run_spec_for_changed_files_FILES || return $?
+    echorun run_spec_for $run_spec_for_changed_files_FILES || return $?
   elif [ $run_spec_for_changed_files_COUNT -gt 1 ]; then
-    echorun beps $run_spec_for_changed_files_FILES || return $?
+    echorun run_spec_for $run_spec_for_changed_files_FILES || return $?
   else
     echo "No specs for changed files !!!"
     return 8472
