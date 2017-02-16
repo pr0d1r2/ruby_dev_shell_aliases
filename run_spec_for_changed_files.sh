@@ -7,6 +7,8 @@ function run_spec_for_changed_files() {
     run_spec_for_changed_files_FILES+=$run_spec_for_changed_files_FILE
     run_spec_for_changed_files_COUNT+=1
   done
+  echo
+  echo
   if [ $run_spec_for_changed_files_COUNT -eq 1 ]; then
     echorun run_spec_for $run_spec_for_changed_files_FILES || return $?
   elif [ $run_spec_for_changed_files_COUNT -gt 1 ]; then
