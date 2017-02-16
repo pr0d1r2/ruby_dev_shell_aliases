@@ -7,7 +7,7 @@
 function run_spec_for() {
   local run_spec_for_FILE
   local run_spec_for_FILES=()
-  for run_spec_for_FILE in `existing_spec_for $@`
+  for run_spec_for_FILE in `existing_spec_for $@ | sort | uniq`
   do
     run_spec_for_FILES+=$run_spec_for_FILE
   done
