@@ -6,7 +6,9 @@
 # run_spec_for spec/model/user_spec.rb:8472 # will run `rspec spec/model/user_spec.rb:8472`
 function run_spec_for() {
   local run_spec_for_STATUS
-  local run_spec_for_CHECKSUM=`git diff HEAD | shasum -a 1 | cut -f 1 -d ' '`
+  local run_spec_for_CHANGESET_CHECKSUM=`git diff HEAD | shasum -a 1 | cut -f 1 -d ' '`
+  local run_spec_for_PARAMS_CHECKSUM=`echo $@ | shasum -a 1 | cut -f 1 -d ' '`
+  local run_spec_for_CHECKSUM="$run_spec_for_CHANGESET_CHECKSUM-$run_spec_for_PARAMS_CHECKSUM"
   if [ -f tmp/run_spec_for-$run_spec_for_CHECKSUM.log ]; then
     echo
     echo "Specs was run previously. Please check tmp/run_spec_for-$run_spec_for_CHECKSUM.log for more details ..."
