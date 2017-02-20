@@ -56,8 +56,10 @@ function run_spec_for() {
     echo beps $run_spec_for_FILES
     echorun beps $run_spec_for_FILES 2>&1 | tee -a tmp/run_spec_for-$run_spec_for_CHECKSUM.log
   else
-    echo "No specs for $@ !!!"
-    return 8472
+    if [ ${#run_spec_for_SINGLE_LINES[@]} -eq 0 ]; then
+      echo "No specs for $@ !!!"
+      return 8472
+    fi
   fi
   run_spec_for_STATUS=$?
   echo $run_spec_for_STATUS > tmp/run_spec_for-$run_spec_for_CHECKSUM.status
