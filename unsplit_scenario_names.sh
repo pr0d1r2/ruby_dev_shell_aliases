@@ -6,8 +6,8 @@ function unsplit_scenario_names() {
     case $unsplit_scenario_names_LINE in
       features/*feature_splitted*)
         echo $unsplit_scenario_names_LINE | \
-          sed -e "s/\.feature_splitted\//.feature:/g" | \
-          sed -e "s/\.feature:\(*.\)\.feature:\(*.\)/.feature:\1/g"
+          sed -e "s/\.feature_splitted\//.feature:/g" \
+              -e "s/\.feature:\(*.\)\.feature:\(*.\)/.feature:\1/g"
         ;;
     esac
   done
