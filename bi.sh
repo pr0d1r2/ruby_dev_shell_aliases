@@ -1,4 +1,4 @@
-unalias bi
+unalias bi 2>/dev/null
 function bi() {
   if [ -e Gemfile.lock ]; then
     cat Gemfile.lock | grep -q 'BUNDLED WITH'

@@ -1,4 +1,4 @@
-unalias bu
+unalias bu 2>/dev/null
 function bu() {
   is_new_bundler
   if [ $? -eq 0 ]; then
