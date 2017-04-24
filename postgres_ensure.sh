@@ -4,4 +4,5 @@ function postgres_ensure() {
     echorun brew install postgresql || return $?
     echorun brew services start postgresql || return $?
   fi
+  return 0
 }
