@@ -1,0 +1,1 @@
+RUBY_DEV_SHELL_ALIASES_PATH="$PROJECTS_PATH/ruby_dev_shell_aliases"
