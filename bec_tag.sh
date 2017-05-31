@@ -1,5 +1,6 @@
 function bec_tag() {
-  local bec_tag_FILES=`ag -l $1 features | grep "feature$"`
+  ensure_command rg || return $?
+  local bec_tag_FILES=`rg -l $1 features | grep "feature$"`
   if [ `echo $bec_tag_FILES | wc -l` -gt 0 ]; then
     if [ $? -gt 0 ]; then
       echo "bec_tag: NO FILES !!!"
