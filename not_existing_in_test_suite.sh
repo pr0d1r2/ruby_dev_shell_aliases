@@ -1,4 +1,4 @@
-exist_in_test_suite() {
+not_existing_in_test_suite() {
   rg --quiet $1 features spec
 
   if [ $? -gt 0 ]; then
