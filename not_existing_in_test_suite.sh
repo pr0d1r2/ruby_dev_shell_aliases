@@ -7,14 +7,16 @@ not_existing_in_test_suite() {
     cat .vcr_used_in | \
       parallel \
         --halt-on-error now,fail=1 \
-        "$not_existing_in_test_suite_COMMAND"
+        "$not_existing_in_test_suite_COMMAND" \
+        &>/dev/null
   else
     parallel \
       --halt-on-error now,fail=1 \
       "$not_existing_in_test_suite_COMMAND" \
       ::: \
       features \
-      spec
+      spec \
+      &>/dev/null
   fi
 
   if [ $? -eq 0 ]; then
