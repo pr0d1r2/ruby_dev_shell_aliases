@@ -1,10 +1,18 @@
 not_existing_in_test_suite() {
-  rg --quiet $1 features spec
+  local not_existing_in_test_suite_COMMAND
+  not_existing_in_test_suite_COMMAND="rg --quiet $1 {};"
+  not_existing_in_test_suite_COMMAND+='if [ $? -eq 0 ]; then exit 1; else exit 0; fi'
 
-  local not_existing_in_test_suite_STATUS=$?
+  parallel \
+    --halt-on-error now,fail=1 \
+    "$not_existing_in_test_suite_COMMAND" \
+    ::: \
+    features \
+    spec
 
-  if [ $not_existing_in_test_suite_STATUS -gt 0 ]; then
+  if [ $? -eq 0 ]; then
     echo $1
+    return 1
   fi
-  return $not_existing_in_test_suite_STATUS
+  return 0
 }
