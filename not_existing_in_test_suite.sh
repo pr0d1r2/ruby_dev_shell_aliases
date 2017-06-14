@@ -1,9 +1,10 @@
 not_existing_in_test_suite() {
   rg --quiet $1 features spec
 
-  if [ $? -gt 0 ]; then
+  local not_existing_in_test_suite_STATUS=$?
+
+  if [ $not_existing_in_test_suite_STATUS -gt 0 ]; then
     echo $1
-    return 1
   fi
-  return 0
+  return $not_existing_in_test_suite_STATUS
 }
