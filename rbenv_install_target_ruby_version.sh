@@ -16,7 +16,7 @@ function rbenv_install_target_ruby_version() {
           rbenv local "$rbenv_install_target_ruby_version_PATCHED_VERSION" || return 206
         fi
       fi
-      bi || return 207
+      echorun bi_quiet || return 207
     else
       echo "No TargetRubyVersion in .rubocop.yml file. Exiting ..."
       return 202
