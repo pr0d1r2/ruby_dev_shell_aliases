@@ -1,6 +1,7 @@
 function guard_stop_all() {
-  echorun kill_forcefully `ps -ax | grep guard-rspec | grep -v grep | cut -b1-5` &
-  echorun kill_forcefully `ps -ax | grep _guard-core | grep -v grep | cut -b1-5` &
-  echorun kill_forcefully `ps -ax | grep bin/guard | grep -v grep | cut -b1-5` &
-  wait
+  kill_forcefully \
+    "$(ps -ax | pgrep guard-rspec | cut -b1-5)" \
+    "$(ps -ax | pgrep _guard-core | cut -b1-5)" \
+    "$(ps -ax | pgrep bin/guard | cut -b1-5)"
+  return $?
 }

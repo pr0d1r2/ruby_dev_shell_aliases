@@ -1,5 +1,3 @@
 function cucumber_stop_all() {
-  echorun kill_forcefully `ps -ax | grep bin/cucumber | grep -v grep | cut -b1-5` &
-  wait
+  kill_forcefully "$(ps -ax | pgrep bin/cucumber | cut -b1-5)"
 }
-
