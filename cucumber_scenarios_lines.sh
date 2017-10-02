@@ -1,7 +1,19 @@
+# Show cucumber scenarios lines
+#
+# Example usage:
+#   cucumber_scenarios_lines features/my.feature features/other.feature:111
+#
+# Will return:
+#   features/my.feature:22
+#   features/my.feature:45
+#   features/other.feature:111
 function cucumber_scenarios_lines() {
-  local cucumber_scenarios_lines_FILE
-  for cucumber_scenarios_lines_FILE in $@
-  do
-    cucumber_scenarios_at_lines $cucumber_scenarios_lines_FILE | sed -e "s|^|$cucumber_scenarios_lines_FILE:|"
-  done
+  parallel \
+    'grep -n "Scenario" {} | cut -f 1 -d : | sed -e "s|^|{}:|"' \
+    ::: \
+    "$@" 2>/dev/null
+  parallel \
+    "echo {} | grep -E ':[0-9]{1,}$'" \
+    ::: \
+    "$@" 2>/dev/null
 }
