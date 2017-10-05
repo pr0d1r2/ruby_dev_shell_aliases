@@ -18,12 +18,19 @@ function migration_aware_run() {
   local migration_aware_run_COMMAND_SUM
   local migration_aware_run_MARKER
   local migration_aware_run_STATUS
+  local migration_aware_run_TMP_PATH
 
   migration_aware_run_LAST_100_COMMITS_SUM=$(git log --pretty=format:"%h - %an : %s" | head -n 100 | shasum -a 1 | cut -f 1 -d ' ')
   migration_aware_run_MIGRATION_CHANGES_SUM=$(git diff HEAD db/migrate | shasum -a 1 | cut -f 1 -d ' ')
   migration_aware_run_LIST_SUFFIX="$$-$migration_aware_run_LAST_100_COMMITS_SUM-$migration_aware_run_MIGRATION_CHANGES_SUM"
-  migration_aware_run_LIST_MARKER="tmp/migration_aware_run_list_unsorted-$migration_aware_run_LIST_SUFFIX"
-  migration_aware_run_SORTED_LIST_MARKER="tmp/migration_aware_run_list_sorted-$migration_aware_run_LIST_SUFFIX"
+  # shellcheck disable=SC2153
+  case "$MIGRATION_AWARE_RUN_TMP_PATH" in
+    "") migration_aware_run_TMP_PATH="tmp";;
+    *) migration_aware_run_TMP_PATH="$MIGRATION_AWARE_RUN_TMP_PATH";;
+  esac
+
+  migration_aware_run_LIST_MARKER="$migration_aware_run_TMP_PATH/migration_aware_run_list_unsorted-$migration_aware_run_LIST_SUFFIX"
+  migration_aware_run_SORTED_LIST_MARKER="$migration_aware_run_TMP_PATH/migration_aware_run_list_sorted-$migration_aware_run_LIST_SUFFIX"
 
   if [ ! -f "$migration_aware_run_LIST_MARKER" ]; then
     find db/migrate -type f | \
@@ -34,7 +41,7 @@ function migration_aware_run() {
   fi
   migration_aware_run_MIGRATION_SUM=$(shasum -a 1 "$migration_aware_run_SORTED_LIST_MARKER" | cut -f 1 -d ' ')
   migration_aware_run_COMMAND_SUM=$(echo "$@" | shasum -a 1 | cut -f 1 -d ' ')
-  migration_aware_run_MARKER="tmp/migration_aware_run-$migration_aware_run_MIGRATION_SUM-$migration_aware_run_COMMAND_SUM"
+  migration_aware_run_MARKER="$migration_aware_run_TMP_PATH/migration_aware_run-$migration_aware_run_MIGRATION_SUM-$migration_aware_run_COMMAND_SUM"
   if [ -f "$migration_aware_run_MARKER" ]; then
     migration_aware_run_STATUS=$(cat "$migration_aware_run_MARKER.status")
     echo
