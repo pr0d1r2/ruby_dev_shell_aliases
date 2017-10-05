@@ -6,29 +6,41 @@
 function migration_aware_run() {
   if [ ! -d db/migrate ]; then
     echo "Migration directory 'db/migrate' does not exist, exiting ..."
-    return 1001
+    return 101
   fi
-  local migration_aware_run_LAST_100_COMMITS_SUM=`git log --pretty=format:"%h - %an : %s" | head -n 100 | shasum -a 1 | cut -f 1 -d ' '`
-  local migration_aware_run_MIGRATION_CHANGES_SUM=`git diff HEAD db/migrate | shasum -a 1 | cut -f 1 -d ' '`
-  local migration_aware_run_LIST_SUFFIX="$$-$migration_aware_run_LAST_100_COMMITS_SUM-$migration_aware_run_MIGRATION_CHANGES_SUM"
-  local migration_aware_run_LIST_MARKER="tmp/migration_aware_run_list_unsorted-$migration_aware_run_LIST_SUFFIX"
-  local migration_aware_run_SORTED_LIST_MARKER="tmp/migration_aware_run_list_sorted-$migration_aware_run_LIST_SUFFIX"
 
-  if [ ! -f $migration_aware_run_LIST_MARKER ]; then
-    find db/migrate -type f | parallel -j `expr \`nproc\` \* 4` 'shasum -a 1 "{}"' 2>/dev/null > $migration_aware_run_LIST_MARKER
+  local migration_aware_run_LAST_100_COMMITS_SUM
+  local migration_aware_run_MIGRATION_CHANGES_SUM
+  local migration_aware_run_LIST_SUFFIX
+  local migration_aware_run_LIST_MARKER
+  local migration_aware_run_SORTED_LIST_MARKER
+  local migration_aware_run_MIGRATION_SUM
+  local migration_aware_run_COMMAND_SUM
+  local migration_aware_run_MARKER
+  local migration_aware_run_STATUS
+
+  migration_aware_run_LAST_100_COMMITS_SUM=$(git log --pretty=format:"%h - %an : %s" | head -n 100 | shasum -a 1 | cut -f 1 -d ' ')
+  migration_aware_run_MIGRATION_CHANGES_SUM=$(git diff HEAD db/migrate | shasum -a 1 | cut -f 1 -d ' ')
+  migration_aware_run_LIST_SUFFIX="$$-$migration_aware_run_LAST_100_COMMITS_SUM-$migration_aware_run_MIGRATION_CHANGES_SUM"
+  migration_aware_run_LIST_MARKER="tmp/migration_aware_run_list_unsorted-$migration_aware_run_LIST_SUFFIX"
+  migration_aware_run_SORTED_LIST_MARKER="tmp/migration_aware_run_list_sorted-$migration_aware_run_LIST_SUFFIX"
+
+  if [ ! -f "$migration_aware_run_LIST_MARKER" ]; then
+    find db/migrate -type f | \
+      parallel -j "$(($(nproc) * 4))" 'shasum -a 1 "{}"' 2>/dev/null > "$migration_aware_run_LIST_MARKER"
   fi
-  if [ ! -f $migration_aware_run_SORTED_LIST_MARKER ]; then
-    cat $migration_aware_run_LIST_MARKER | sort > $migration_aware_run_SORTED_LIST_MARKER
+  if [ ! -f "$migration_aware_run_SORTED_LIST_MARKER" ]; then
+    sort < "$migration_aware_run_LIST_MARKER" > "$migration_aware_run_SORTED_LIST_MARKER"
   fi
-  local migration_aware_run_MIGRATION_SUM=`shasum -a 1 $migration_aware_run_SORTED_LIST_MARKER | cut -f 1 -d ' '`
-  local migration_aware_run_COMMAND_SUM=`echo $@ | shasum -a 1 | cut -f 1 -d ' '`
-  local migration_aware_run_MARKER="tmp/migration_aware_run-$migration_aware_run_MIGRATION_SUM-$migration_aware_run_COMMAND_SUM"
-  if [ -f $migration_aware_run_MARKER ]; then
-    local migration_aware_run_STATUS=`cat $migration_aware_run_MARKER.status`
+  migration_aware_run_MIGRATION_SUM=$(shasum -a 1 "$migration_aware_run_SORTED_LIST_MARKER" | cut -f 1 -d ' ')
+  migration_aware_run_COMMAND_SUM=$(echo "$@" | shasum -a 1 | cut -f 1 -d ' ')
+  migration_aware_run_MARKER="tmp/migration_aware_run-$migration_aware_run_MIGRATION_SUM-$migration_aware_run_COMMAND_SUM"
+  if [ -f "$migration_aware_run_MARKER" ]; then
+    migration_aware_run_STATUS=$(cat "$migration_aware_run_MARKER.status")
     echo
-    echo "Command already run with current migrations: $@"
+    echo "Command already run with current migrations: $*"
     echo
-    if [ $migration_aware_run_STATUS -eq 0 ]; then
+    if [ "$migration_aware_run_STATUS" -eq 0 ]; then
       echo "It was SUCCESSFUL."
     else
       echo "It was FAILED."
@@ -40,12 +52,12 @@ function migration_aware_run() {
     echo "To see more details about run please do:"
     echo "  less $migration_aware_run_MARKER"
     echo
-    tail $migration_aware_run_MARKER
+    tail "$migration_aware_run_MARKER"
     return $?
   else
-    echorun $@ 2>&1 | tee -a $migration_aware_run_MARKER
+    echorun "$@" 2>&1 | tee -a "$migration_aware_run_MARKER"
     local migration_aware_run_STATUS=$?
-    echo $migration_aware_run_STATUS > $migration_aware_run_MARKER.status
+    echo $migration_aware_run_STATUS > "$migration_aware_run_MARKER.status"
     return $migration_aware_run_STATUS
   fi
 }
