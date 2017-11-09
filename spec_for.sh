@@ -7,7 +7,7 @@ function spec_for() {
       find "$spec_for_FILE" -type f -name "*.rb" | \
         parallel "source $RUBY_DEV_SHELL_ALIASES_PATH/spec_for.sh && spec_for {}" 2>/dev/null
     else
-      spec_for_SPEC_FILE="$(echo "$spec_for_FILE" | sed -e "s/app\//spec\//" -e 's/.rb$/_spec.rb/' -e 's/.slim$/.slim_spec.rb/')"
+      spec_for_SPEC_FILE="$(echo "$spec_for_FILE" | sed -e 's|^./||' -e "s/app\//spec\//" -e 's/.rb$/_spec.rb/' -e 's/.slim$/.slim_spec.rb/')"
       case $spec_for_SPEC_FILE in
         spec/* | engines/*) ;;
         *)
