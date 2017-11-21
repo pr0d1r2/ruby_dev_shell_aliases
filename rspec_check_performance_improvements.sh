@@ -1,5 +1,5 @@
 function rspec_check_performance_improvements() {
-  git status -sb | grep -E "^( M |M  |MM )" | grep "_spec\.rb$" | cut -b4- \
+  git status -sb | grep -E "^( M |M  |MM )" | grep "_spec\.rb$" | cut -b4- | \
     parallel \
       -j 1 \
       --halt now,fail=1 \
