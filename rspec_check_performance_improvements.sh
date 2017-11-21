@@ -1,24 +1,20 @@
 function rspec_check_performance_improvements() {
-  local rspec_check_performance_improvements_SPECS=()
-  local rspec_check_performance_improvements_SPEC
-  for rspec_check_performance_improvements_SPEC in `git status -sb | grep "^ M " | grep "_spec\.rb$" | cut -b4-`
-  do
-    rspec_check_performance_improvements_SPECS+="$rspec_check_performance_improvements_SPEC"
-  done
-  for rspec_check_performance_improvements_SPEC in $rspec_check_performance_improvements_SPECS
-  do
-    echo
-    echo
-    echo "$rspec_check_performance_improvements_SPEC"
-    echo
-    echo "Before"
-    echorun git stash || return $?
-    echorun bin/rspec $rspec_check_performance_improvements_SPEC
-    echo
-    echo "After"
-    echorun git stash pop || return $?
-    echorun bin/rspec $rspec_check_performance_improvements_SPEC
-    echo
-    echo
-  done
+  git status -sb | grep -E "^( M |M  |MM )" | grep "_spec\.rb$" | cut -b4- \
+    parallel \
+      -j 1 \
+      --halt now,fail=1 \
+      "echo &&
+       echo &&
+       echo {} &&
+       echo &&
+       echo 'Before' &&
+       git stash &&
+       bin/rspec -f p {} &&
+       echo &&
+       echo 'After' &&
+       git stash pop &&
+       bin/rspec -f p {} &&
+       echo &&
+       echo"
+  return $?
 }
