@@ -36,10 +36,10 @@ function pgtune_mac() {
     fi
 
     # this will go when pgtune supports postgres 9.5+
-    pgtune_mac_PG_VERSION=$(psql --version | cut -f 2 -d ')')
+    pgtune_mac_PG_VERSION=$(psql --version | cut -f 2 -d ')' | cut -f 2 -d ' ')
     pgtune_mac_PG_VERSION_MAJOR=$(echo "$pgtune_mac_PG_VERSION" | cut -f 1 -d .)
     if [ "$pgtune_mac_PG_VERSION_MAJOR" -ge 9 ]; then
-      if ! (grep -q "^checkpoint_segments" $pgtune_mac_CONFIG); then
+      if (grep -q "^checkpoint_segments" $pgtune_mac_CONFIG); then
         echo "Removing checkpoint_segments as postgres versions >=9 ..."
         grep -v "^checkpoint_segments" $pgtune_mac_CONFIG > ~/.postgresql.conf.tmp || return $?
         mv ~/.postgresql.conf.tmp $pgtune_mac_CONFIG || return $?
