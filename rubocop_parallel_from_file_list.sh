@@ -7,8 +7,7 @@ function rubocop_parallel_from_file_list() {
   rubocop_parallel_from_file_list_COMMAND="source $HOME/projects/common_shell_aliases/silently.sh && "
   rubocop_parallel_from_file_list_COMMAND+="source $HOME/projects/osx_shell_aliases/md5sum.sh && " ##Darwin
   rubocop_parallel_from_file_list_COMMAND+="silently rubocop ${*:2} {}"
-  parallel cat "$@" | \
-    parallel "$rubocop_parallel_from_file_list_COMMAND"
+  parallel "$rubocop_parallel_from_file_list_COMMAND" < "$1"
 
   return $?
 }
