@@ -8,12 +8,8 @@ function rubocop_parallel_specs_aggregate_failures() {
   rubocop_parallel_specs_aggregate_failures_COMMAND+="source $HOME/projects/osx_shell_aliases/md5sum.sh && " ##Darwin
   rubocop_parallel_specs_aggregate_failures_COMMAND+="silently rubocop --only RSpec/AggregateFailures $* {}"
   # shellcheck disable=SC2046
-  parallel \
-    'find {} -type f -iname "*.rb"' \
-    ::: \
-    $(ls -d engines/*/spec 2>/dev/null) \
-    $(ls -d gems/*/spec 2>/dev/null) \
-    spec | \
+  spec_directories | parallel \
+    'find {} -type f -iname "*.rb"' | \
       parallel "$rubocop_parallel_specs_aggregate_failures_COMMAND"
 
   return $?
