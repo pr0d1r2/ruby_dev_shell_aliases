@@ -1,4 +1,5 @@
 function rspec_check_performance_improvements() {
+  git_not_clean || return $?
   git status -sb | grep -E "^( M |M  |MM )" | grep "_spec\.rb$" | cut -b4- | \
     parallel \
       -j 1 \
