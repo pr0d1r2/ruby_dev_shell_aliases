@@ -21,17 +21,15 @@ function rspec_files_containing_shared_examples_from_file() {
      sort -u
     " \
     ::: \
-    "$@"
-# TODO: recursive part which fails after couple of files
-#    "$@" | sort -u | \
-#      parallel -j 1 \
-#        "if (echo {} | grep -q \"_spec\\\.rb$\") then
-#           echo {}
-#         else
-#           echo FORK {}
-#           source $HOME/projects/ruby_dev_shell_aliases/rspec_files_containing_shared_examples_from_file.sh && \
-#           rspec_files_containing_shared_examples_from_file {}
-#           echo POST FORK
-#         fi
-#        "
+    "$@" | sort -u | IFS="|" grep -vE "^($*)$" | \
+      parallel -j 1 \
+        "if (echo {} | grep -q \"_spec\\\.rb$\") then
+           echo {}
+         else
+           echo FORK {}
+           source $HOME/projects/ruby_dev_shell_aliases/rspec_files_containing_shared_examples_from_file.sh && \
+           rspec_files_containing_shared_examples_from_file {}
+           echo POST FORK
+         fi
+        "
 }
