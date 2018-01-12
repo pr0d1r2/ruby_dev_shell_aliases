@@ -1,0 +1,4 @@
+function rs() {
+  rspec "$@"
+  return $?
+}
