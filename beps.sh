@@ -4,7 +4,7 @@ function beps() {
       DISABLE_SPRING=1 bundle exec parallel_rspec -- --fail-fast -- spec
       ;;
     *)
-      DISABLE_SPRING=1 bundle exec parallel_rspec -- --fail-fast -- $@
+      DISABLE_SPRING=1 bundle exec parallel_rspec -- --fail-fast -- "$@"
       ;;
   esac
   return $?
