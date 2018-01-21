@@ -1,8 +1,11 @@
 function rspec_ensure_no_focus() {
   ensure_command rg || return $?
-  rg ", :focus " spec | grep -q "focus"
-  if [ $? -eq 0 ]; then
+  # shellcheck disable=SC2046
+  if ( rg -e \
+         ", :focus | , focus: true | fit do | fit '| fit \"| fspecify do | fspecify '| fspecify \"| fcontext do | fcontext '| fcontext \"| fdescribe do | fdescribe '| fdescribe \"" \
+         $(spec_directories)
+     ); then
     echo "ERROR: specs contain :focus !!!"
-    return 8472
+    return 100
   fi
 }
