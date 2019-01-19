@@ -13,7 +13,7 @@ function rspec_files_containing_shared_examples_from_file() {
       ;;
   esac
   parallel \
-    "grep -E \"shared_examples \\\"(.*)\\\"|shared_examples '(.*)'|shared_examples_for \\\"(.*)\\\"|shared_examples_for '(.*)'\" {} | \
+    "test -f {} && grep -E \"shared_examples \\\"(.*)\\\"|shared_examples '(.*)'|shared_examples_for \\\"(.*)\\\"|shared_examples_for '(.*)'\" {} | \
      sed -e \"s/shared_examples \\\"/~/\" -e \"s/shared_examples '/~/\" -e \"s/shared_examples_for \\\"/~/\" -e \"s/shared_examples_for '/~/\" -e \"s/\\\" do/~/\" -e \"s/' do/~/\" | \
      cut -f 2 -d '~' | \
      parallel -I '<>' \"
