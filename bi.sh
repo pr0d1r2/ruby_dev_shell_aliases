@@ -28,7 +28,7 @@ function bi() {
         "$bi_BUNDLED_WITH_VERSION")
           ;;
         *)
-          echorun gem install bundler -v "$bi_BUNDLED_WITH_VERSION"
+          echorun gem install bundler -v "$bi_BUNDLED_WITH_VERSION" || return $?
           ;;
       esac
     fi
