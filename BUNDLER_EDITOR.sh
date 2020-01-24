@@ -1,2 +1,4 @@
-export BUNDLER_EDITOR=`which mvim` ##Darwin
-export BUNDLER_EDITOR=`which vim` ##Linux
+BUNDLER_EDITOR="$(command -v mvim)" ##Darwin
+export BUNDLER_EDITOR ##Darwin
+BUNDLER_EDITOR="$(command -v vim)" ##Linux
+export BUNDLER_EDITOR ##Linux

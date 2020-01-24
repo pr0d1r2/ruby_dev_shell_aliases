@@ -1,5 +1,5 @@
 function bi_nokogiri_with_xz() {
-  which xz &>/dev/null
+  command -v xz &>/dev/null
   local bi_nokogiri_with_xz_NOT_PRESENT=$?
   if [ $bi_nokogiri_with_xz_NOT_PRESENT -eq 0 ]; then
     brew uninstall --ignore-dependencies --force xz || return $?

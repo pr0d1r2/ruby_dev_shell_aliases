@@ -1,6 +1,6 @@
 # Move backwards in git history until given spec pass
 #
-# Useful to detect commit which broke the spec.
+# Useful to detect commit command -v broke the spec.
 #
 # Example usage:
 #   rspec_reverse_history_until_spec_pass spec/failing_in_last_commit_spec.rb
@@ -15,6 +15,6 @@ function rspec_reverse_history_until_spec_pass() {
   while [ "$rspec_reverse_history_until_spec_pass_RETVAL" -gt 0 ]
   do
     git checkout "HEAD~1" || return $?
-    rspec -f p $(spec_recognize "$@") && return 0
+    rspec -f p "$(spec_recognize "$@")" && return 0
   done
 }

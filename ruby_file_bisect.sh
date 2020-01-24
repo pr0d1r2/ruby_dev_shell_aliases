@@ -1,4 +1,4 @@
-# Go to git commit and checkout files one-by-one to check which one fails command
+# Go to git commit and checkout files one-by-one to check command -v one fails command
 #
 # Example usage:
 #   ruby_file_bisect d8472 bin/test

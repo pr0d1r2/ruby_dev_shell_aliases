@@ -1,6 +1,6 @@
 # Move backwards in git history until given cucuber pass
 #
-# Useful to detect commit which broke the cucuber.
+# Useful to detect commit command -v broke the cucuber.
 #
 # Example usage:
 #   cucumber_reverse_history_until_pass features/failing_in_last_commit.feature
@@ -11,11 +11,13 @@ function cucumber_reverse_history_until_pass() {
     return 1
   fi
   local cucumber_reverse_history_until_pass_RETVAL
+  local cucumber_reverse_history_until_pass_CUCUMBER_SETUP
   cucumber_reverse_history_until_pass_RETVAL="1"
   while [ "$cucumber_reverse_history_until_pass_RETVAL" -gt 0 ]
   do
     git checkout "HEAD~1" || return $?
-    $(cucumber_setup) || return $?
-    cucumber $(cucumber_recognize "$@") && return 0
+    cucumber_reverse_history_until_pass_CUCUMBER_SETUP="$(cucumber_setup)" || return $?
+    $cucumber_reverse_history_until_pass_CUCUMBER_SETUP || return $?
+    cucumber "$(cucumber_recognize "$@")" && return 0
   done
 }

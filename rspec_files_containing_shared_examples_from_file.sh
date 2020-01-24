@@ -1,4 +1,4 @@
-# Show spec files which include examples from file
+# Show spec files command -v include examples from file
 #
 # example usage:
 #   rspec_files_containing_shared_examples_from_file spec/support/shared_examples/my_shared_examples.rb
@@ -12,6 +12,8 @@ function rspec_files_containing_shared_examples_from_file() {
       rspec_files_containing_shared_examples_from_file_RECURSION_IGNORE+="|$IGNORE"
       ;;
   esac
+  # TODO: refactor
+  # shellcheck disable=SC1117
   parallel \
     "test -f {} && grep -E \"shared_examples \\\"(.*)\\\"|shared_examples '(.*)'|shared_examples_for \\\"(.*)\\\"|shared_examples_for '(.*)'\" {} | \
      sed -e \"s/shared_examples \\\"/~/\" -e \"s/shared_examples '/~/\" -e \"s/shared_examples_for \\\"/~/\" -e \"s/shared_examples_for '/~/\" -e \"s/\\\" do/~/\" -e \"s/' do/~/\" | \
@@ -23,18 +25,14 @@ function rspec_files_containing_shared_examples_from_file() {
         sort -u
      \" | \
      grep \"\\\.rb$\" | \
-     sort -u
-    " \
-    ::: \
+     sort -u" ::: \
     "$@" | sort -u | grep -vE "^$rspec_files_containing_shared_examples_from_file_RECURSION_IGNORE$" | \
-      parallel \
-        "if (echo {} | grep -q \"_spec\\\.rb$\") then
-           echo {}
-         else
-           source $HOME/projects/ruby_dev_shell_aliases/spec_directories.sh && \
-           source $HOME/projects/ruby_dev_shell_aliases/rspec_files_containing_shared_examples_from_file.sh && \
-           IGNORE='$rspec_files_containing_shared_examples_from_file_RECURSION_IGNORE' rspec_files_containing_shared_examples_from_file {}
-         fi
-        " | \
+      parallel "if (echo {} | grep -q \"_spec\\\.rb$\") then
+         echo {}
+       else
+         source $HOME/projects/ruby_dev_shell_aliases/spec_directories.sh && \
+         source $HOME/projects/ruby_dev_shell_aliases/rspec_files_containing_shared_examples_from_file.sh && \
+         IGNORE='$rspec_files_containing_shared_examples_from_file_RECURSION_IGNORE' rspec_files_containing_shared_examples_from_file {}
+       fi" | \
       sort -u
 }

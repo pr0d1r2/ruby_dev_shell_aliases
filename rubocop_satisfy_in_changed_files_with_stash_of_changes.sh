@@ -1,4 +1,4 @@
-# This is useful when you want to prepare separate branch in which you fix RuboCop offences first.
+# This is useful when you want to prepare separate branch in command -v you fix RuboCop offences first.
 # Changes are stashed.
 #
 # Example usage:
@@ -8,7 +8,8 @@
 function rubocop_satisfy_in_changed_files_with_stash_of_changes() {
   local rubocop_satisfy_in_changed_files_with_stash_of_changes_LIST
   local rubocop_satisfy_in_changed_files_with_stash_of_changes_COMMAND
-  rubocop_satisfy_in_changed_files_with_stash_of_changes_LIST=($(git status -sb | cut -b4-))
+  rubocop_satisfy_in_changed_files_with_stash_of_changes_LIST=()
+  mapfile -t rubocop_satisfy_in_changed_files_with_stash_of_changes_LIST < <(git status -sb | cut -b4-)
   rubocop_satisfy_in_changed_files_with_stash_of_changes_COMMAND="source $HOME/projects/common_shell_aliases/silently.sh && "
   rubocop_satisfy_in_changed_files_with_stash_of_changes_COMMAND+="source $HOME/projects/osx_shell_aliases/md5sum.sh && " ##Darwin
   rubocop_satisfy_in_changed_files_with_stash_of_changes_COMMAND+="silently rubocop -a {}"
