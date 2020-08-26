@@ -12,6 +12,7 @@ function rspec_detect_slow_specs() {
   local rspec_detect_slow_specs_COMMAND
   local rspec_detect_slow_specs_TMP
   local rspec_detect_slow_specs_SLOW_SPEC_THRESHOLD
+  local rspec_detect_slow_specs_STATUS
   if [ -z "$SLOW_SPEC_THRESHOLD" ]; then
     rspec_detect_slow_specs_SLOW_SPEC_THRESHOLD="18"
   else
@@ -22,8 +23,10 @@ function rspec_detect_slow_specs() {
   rspec_detect_slow_specs_COMMAND+="source $HOME/projects/osx_shell_aliases/md5sum.sh && " ##Darwin
   rspec_detect_slow_specs_COMMAND+="TEST_ENV_NUMBER={%} silently bundle exec rspec -f json -o '$rspec_detect_slow_specs_TMP/{%}.json' {} ;"
   rspec_detect_slow_specs_COMMAND+="cat '$rspec_detect_slow_specs_TMP/{%}.json' | jq '.summary.duration' | cut -f 1 -d . > '$rspec_detect_slow_specs_TMP/{%}.time' ;"
-  rspec_detect_slow_specs_COMMAND+="test \$(cat '$rspec_detect_slow_specs_TMP/{%}.time') -gt $rspec_detect_slow_specs_SLOW_SPEC_THRESHOLD && echo {}"
+  rspec_detect_slow_specs_COMMAND+="test \$(cat '$rspec_detect_slow_specs_TMP/{%}.time') -gt $rspec_detect_slow_specs_SLOW_SPEC_THRESHOLD && (echo {} ; exit 1)"
   parallel "find {} -type f -name '*_spec.rb'" ::: $@ | \
     parallel -j "$(( $(nproc) / 2 ))" "$rspec_detect_slow_specs_COMMAND"
+  rspec_detect_slow_specs_STATUS="$?"
   rm -rf "$rspec_detect_slow_specs_TMP" || return $?
+  return $rspec_detect_slow_specs_STATUS
 }
