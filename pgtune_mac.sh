@@ -65,7 +65,7 @@ function pgtune_mac() {
     fi
 
     if [ $pgtune_mac_RELOAD -eq 1 ]; then
-      pgreload_mac || return $?
+      pgreload_mac $pgtune_mac_CONFIG || return $?
     fi
   else
     echo
