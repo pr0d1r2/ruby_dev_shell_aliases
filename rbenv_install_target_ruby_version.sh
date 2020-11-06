@@ -15,9 +15,11 @@ function rbenv_install_target_ruby_version() {
       return 201
     fi
   fi
-  cd "$HOME/.rbenv/plugins/ruby-build" || return 203
-  git pull || git pull || return 204
-  cd - || return 205
+  if [ -d "$HOME/.rbenv/plugins/ruby-build" ]; then
+    cd "$HOME/.rbenv/plugins/ruby-build" || return 203
+    git pull || git pull || return 204
+    cd - || return 205
+  fi
   local rbenv_install_target_ruby_version_PATCHED_VERSION
   rbenv_install_target_ruby_version_PATCHED_VERSION=$(
     rbenv install --list | grep "  $rbenv_install_target_ruby_version_VERSION" | sort | tail -n 1 | cut -b3-
