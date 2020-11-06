@@ -22,7 +22,7 @@ function rbenv_install_target_ruby_version() {
   fi
   local rbenv_install_target_ruby_version_PATCHED_VERSION
   rbenv_install_target_ruby_version_PATCHED_VERSION=$(
-    rbenv install --list | grep "  $rbenv_install_target_ruby_version_VERSION" | sort | tail -n 1 | cut -b3-
+    rbenv install --list | grep "^$rbenv_install_target_ruby_version_VERSION" | sort | tail -n 1
   )
   if ! (rbenv version | cut -f 1 -d ' ' | grep -q "$rbenv_install_target_ruby_version_PATCHED_VERSION"); then
     if ! (rbenv local "$rbenv_install_target_ruby_version_PATCHED_VERSION") then
