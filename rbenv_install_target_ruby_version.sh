@@ -31,5 +31,5 @@ function rbenv_install_target_ruby_version() {
     fi
   fi
   echorun bi_quiet || return 207
-  echorun gem install terminal-notifier || return 208
+  echorun gem install terminal-notifier foreman || return 208
 }
