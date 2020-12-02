@@ -9,6 +9,6 @@ function ruby_version_set() {
       ;;
   esac
   echo "$ruby_version_set_VERSION" > .ruby-version || return $?
-  sed -ie "s/^ruby '[0-9.]\{1,\}'/ruby '$ruby_version_set_VERSION'/" Gemfile || return $?
+  sed -i '' -e "s/^ruby '[0-9.]\{1,\}'/ruby '$ruby_version_set_VERSION'/" Gemfile || return $?
   bi || return $?
 }
