@@ -14,8 +14,8 @@ function bi() {
         git pull || return $?
         cd - || return $?
         $HOME/.rbenv/bin/rbenv install "$bi_RUBY_VERSION" || return $?
-        $HOME/.rbenv/bin/rbenv local "$bi_RUBY_VERSION" || return $?
       fi
+      $HOME/.rbenv/bin/rbenv local "$bi_RUBY_VERSION" || return $?
     fi
   fi
   if [ -e Gemfile.lock ]; then
