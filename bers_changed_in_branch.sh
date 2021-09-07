@@ -2,7 +2,7 @@ function bers_changed_in_branch() {
   rspec_ensure_no_focus || return $?
   local bers_changed_in_branch_FILE
   local bers_changed_in_branch_FILES_EXISTING=()
-  for bers_changed_in_branch_FILE in `git_files_changed_in_branch | grep spec | grep "_spec.rb$"`
+  for bers_changed_in_branch_FILE in `git_files_changed_in_branch | grep spec | grep "_spec.rb$"` $@
   do
     if [ -f $bers_changed_in_branch_FILE ]; then
       bers_changed_in_branch_FILES_EXISTING+=$bers_changed_in_branch_FILE
