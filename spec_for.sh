@@ -14,7 +14,7 @@ function spec_for() {
           spec_for_SPEC_FILE="spec/$spec_for_SPEC_FILE"
           ;;
       esac
-      echo "$spec_for_SPEC_FILE" | grep --color=never "_spec.rb$" | sed -e 's/_spec_spec.rb$/_spec.rb/' | parallel "test -f {} && echo {}"
+      echo "$spec_for_SPEC_FILE" | grep --color=never "_spec.rb$" | sed -e 's/_spec_spec.rb$/_spec.rb/'
     fi
   done
 }
