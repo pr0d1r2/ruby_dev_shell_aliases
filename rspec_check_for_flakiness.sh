@@ -27,7 +27,7 @@ function rspec_check_for_flakiness() {
     rspec_check_for_flakiness_COMMAND+="SEED=\$(echo {} | cut -f 2 -d +) && "
     rspec_check_for_flakiness_COMMAND+="FILE=\$(echo {} | cut -f 1 -d +) && "
     rspec_check_for_flakiness_COMMAND+="TEST_ENV_NUMBER={%} silently bundle exec rspec --seed \$SEED -f p \$FILE"
-    rspec_check_for_flakiness_END=$(expr "$rspec_check_for_flakiness_COUNTER" + "$rspec_check_for_flakiness_STEP" )
+    rspec_check_for_flakiness_END=$(expr $rspec_check_for_flakiness_COUNTER + $rspec_check_for_flakiness_STEP )
 
     START="$rspec_check_for_flakiness_COUNTER" END="$rspec_check_for_flakiness_END" seed_permutations "$@" | \
       parallel --halt now,fail=1 "$rspec_check_for_flakiness_COMMAND" || return $?
