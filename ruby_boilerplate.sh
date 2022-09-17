@@ -19,18 +19,18 @@ end" > Gemfile
   fi
 
   if [ ! -f .rubocop_todo.yml ]; then
-    bundle exec rubocop --auto-gen-config
+    bundle exec rubocop --auto-gen-config --auto-gen-only-exclude --exclude-limit 10000
   fi
 
   if ! (grep rubocop-rspec .rubocop.yml); then
     echo "require: rubocop-rspec" >> .rubocop.yml
-    bundle exec rubocop --auto-gen-config
+    bundle exec rubocop --auto-gen-config --auto-gen-only-exclude --exclude-limit 10000
   fi
 
   if ! (grep 'NewCops: enable' .rubocop.yml); then
     echo "AllCops:
   NewCops: enable
   TargetRubyVersion: 3.0.0" >> .rubocop.yml
-    bundle exec rubocop --auto-gen-config
+    bundle exec rubocop --auto-gen-config --auto-gen-only-exclude --exclude-limit 10000
   fi
 }
