@@ -9,7 +9,7 @@ function bers_changed_in_branch() {
     fi
   done
   if [ `echo $bers_changed_in_branch_FILES_EXISTING | wc -l` -gt 0 ]; then
-    echorun bers `echo $bers_changed_in_branch_FILES_EXISTING | tr "\n" " "`
+    echorun bundle exec rspec `echo $bers_changed_in_branch_FILES_EXISTING | tr "\n" " "`
   else
     echo
     echo "$0: nothing to run"
