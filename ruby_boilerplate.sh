@@ -1,8 +1,8 @@
 function ruby_boilerplate() {
-  test -f .ruby-version || echo 3.0.0 > .ruby-version
+  test -f .ruby-version || echo 3.2.2 > .ruby-version
   test -f Gemfile || echo "# frozen_string_literal: true
 
-ruby '3.0.0'
+ruby '3.2.2'
 
 group :development do
   gem 'rspec', require: false
@@ -30,7 +30,7 @@ end" > Gemfile
   if ! (grep 'NewCops: enable' .rubocop.yml); then
     echo "AllCops:
   NewCops: enable
-  TargetRubyVersion: 3.0.0" >> .rubocop.yml
+  TargetRubyVersion: 3.2.2" >> .rubocop.yml
     bundle exec rubocop --auto-gen-config --auto-gen-only-exclude --exclude-limit 10000
   fi
 }
