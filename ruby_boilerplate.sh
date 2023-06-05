@@ -63,6 +63,24 @@ end" > spec/lib/boilerplate_spec.rb || return $?
 
   bundle exec rubocop --auto-gen-config --auto-gen-only-exclude --exclude-limit 10000 || return $?
 
+echo "--- a/Guardfile
++++ b/Guardfile
+@@ -69,7 +69,13 @@ guard :rspec, cmd: "bundle exec rspec" do
+   end
+ end
+
+-guard :rubocop do
++RUBOCOP_CONFIG = {
++  cli: '--display-cop-names --parallel',
++  all_on_start: true,
++  halt_on_fail: true
++}.freeze
++
++guard :rubocop, RUBOCOP_CONFIG do
+   watch(%r{.+\.rb$})
+   watch(%r{(?:.+/)?\.rubocop(?:_todo)?\.yml$}) { |m| File.dirname(m[0]) }
+ end" | patch -p1 || return $?
+
   if [ -d .git ]; then
     grep "^\.bundle/$" .gitignore || echo ".bundle/" >> .gitignore || return $?
     git add .rubocop.yml .rubocop_todo.yml .ruby-version Gemfile Gemfile.lock Guardfile lib/boilerplate.rb spec/lib/boilerplate_spec.rb .gitignore || return $?
