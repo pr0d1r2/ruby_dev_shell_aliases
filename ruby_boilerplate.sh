@@ -19,19 +19,19 @@ end" > Gemfile
   fi
 
   if [ ! -f .rubocop_todo.yml ]; then
-    bundle exec rubocop --auto-gen-config --auto-gen-only-exclude --exclude-limit 10000
+    bundle exec rubocop --auto-gen-config --auto-gen-only-exclude --exclude-limit 10000 || return $?
   fi
 
   if ! (grep rubocop-rspec .rubocop.yml); then
     echo "require: rubocop-rspec" >> .rubocop.yml
-    bundle exec rubocop --auto-gen-config --auto-gen-only-exclude --exclude-limit 10000
+    bundle exec rubocop --auto-gen-config --auto-gen-only-exclude --exclude-limit 10000 || return $?
   fi
 
   if ! (grep 'NewCops: enable' .rubocop.yml); then
     echo "AllCops:
   NewCops: enable
   TargetRubyVersion: 3.2.2" >> .rubocop.yml
-    bundle exec rubocop --auto-gen-config --auto-gen-only-exclude --exclude-limit 10000
+    bundle exec rubocop --auto-gen-config --auto-gen-only-exclude --exclude-limit 10000 || return $?
   fi
 
   test -d lib || mkdir lib || return $?
@@ -44,7 +44,7 @@ class Boilerplate
   def run
     'OK'
   end
-end" > lib/boilerplate.rb
+end" > lib/boilerplate.rb || return $?
 
   echo "# frozen_string_literal: true
 
@@ -57,7 +57,7 @@ RSpec.describe Boilerplate do
   it do
     expect(instance.run).to eq('OK')
   end
-end" > spec/lib/boilerplate_spec.rb
+end" > spec/lib/boilerplate_spec.rb || return $?
 
-  bundle exec rubocop --auto-gen-config --auto-gen-only-exclude --exclude-limit 10000
+  bundle exec rubocop --auto-gen-config --auto-gen-only-exclude --exclude-limit 10000 || return $?
 }
