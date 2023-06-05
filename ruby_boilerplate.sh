@@ -2,6 +2,8 @@ function ruby_boilerplate() {
   test -f .ruby-version || echo 3.2.2 > .ruby-version
   test -f Gemfile || echo "# frozen_string_literal: true
 
+source 'https://rubygems.org'
+
 ruby '3.2.2'
 
 group :development do
