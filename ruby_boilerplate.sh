@@ -62,4 +62,10 @@ RSpec.describe Boilerplate do
 end" > spec/lib/boilerplate_spec.rb || return $?
 
   bundle exec rubocop --auto-gen-config --auto-gen-only-exclude --exclude-limit 10000 || return $?
+
+  if [ -d .git ]; then
+    grep "^\.bundle/$" .gitignore || echo ".bundle/" >> .gitignore || return $?
+    git add .rubocop.yml .rubocop_todo.yml .ruby-version Gemfile Gemfile.lock Guardfile lib/boilerplate.rb spec/lib/boilerplate_spec.rb .gitignore || return $?
+    git commit -a -m "Add Ruby TDD boilerplate"
+  fi
 }
