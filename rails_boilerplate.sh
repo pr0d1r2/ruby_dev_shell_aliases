@@ -36,6 +36,7 @@ end" >> Gemfile
   echo "group :test do
   gem 'factory_bot_rails', require: false
 end" >> Gemfile
+  bundle install || return $?
   git add Gemfile Gemfile.lock || return $?
   git commit Gemfile Gemfile.lock -m "Add factory support" || return $?
 
