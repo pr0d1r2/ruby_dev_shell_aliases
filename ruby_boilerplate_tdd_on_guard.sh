@@ -31,7 +31,7 @@ end" >> Gemfile
 
 echo "--- a/Guardfile
 +++ b/Guardfile
-@@ -69,7 +69,13 @@ guard :rspec, cmd: "bundle exec rspec" do
+@@ -69,7 +69,13 @@ guard :rspec, cmd: 'bundle exec rspec' do
    end
  end
 
