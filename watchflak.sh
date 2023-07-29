@@ -8,6 +8,24 @@ function watchflak() {
       ;;
   esac
 
+  local watchflak_COMMAND
+
+  while [ $(ps -ax | grep bin/rspec | grep -v grep | wc -l) -gt 0 ]
+  do
+    echo "watchflak: killing remaining RSpec workers..."
+    ps -ax | grep bin/rspec | grep -v grep | cut -b1-5 | parallel "kill {}"
+    sleep 0.5
+  done
+
+  while [ $(ps -ax | grep bin/rspec | grep -v grep | wc -l) -gt 0 ]
+  do
+    echo "watchflak: killing remaining RSpec workers..."
+    ps -ax | grep bin/rspec | grep -v grep | cut -b1-5 | parallel "kill -9 {}"
+    sleep 0.5
+  done
+
+  clear || return $?
+
   watchexec \
     --restart --shell zsh -w $1 \
     -- \
